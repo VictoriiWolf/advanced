@@ -1,0 +1,141 @@
+1. npm init
+туда записывается имя и прочая ерунда. в entry point как правило указывается index.js.
+
+2. установить HTTP-сервер:
+
+npm install -- global http-server
+
+src
+http-server
+Starting up http-server, serving ./
+Available on:
+http://127.0.0.1:8080
+Hit CTRL-C to stop the server
+
+-> открыть браузер с адресом  http://localhost:8080
+
+
+3. установка необходимых пакетов:
+
+
+LIVE SERVER
+npm install --save-dev live-server
+
+// "scripts": {
+    "start": "http-server src"
+}
+
+
+ESLINT
+npm install --save-dev eslint
+
+"scripts": {
+    "lint": "eslint ."
+}
+
+в eslint.json:
+
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": "airbnb-base",
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-restricted-syntax": [
+            "error",
+            "LabeledStatement",
+            "WithStatement"
+            ]      
+    }
+}  
+
+//запустить: npm run lint
+//пофиксить автоматически: npm run lint -- --fix
+
+BABEL
+
+npm install --save-dev @babel/core @babel/cli @babel/preset-env
+npm install core-js@3
+
+/ "scripts": {
+    "build": "babel src -d dist"
+
+}
+
+в .babelrc: 
+
+{
+"presets": [
+    [
+    "@babel/preset-env", {
+    "useBuiltIns": "usage",
+    "corejs": 3
+    }
+    ]
+]
+}
+
+запустить: npm build
+
+WEBPACK
+
+npm install --save-dev webpack webpack-cli babel-loader
+
+"scripts" {
+    "build": "webpack --mode production"
+
+},
+
+в webpack.config.js: 
+ 
+const path = require('path');
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'app.bundle.js',
+}
+    module: {
+        rules: [{
+            test: /\.???$/,
+            use: '???'
+        }]
+    }
+};
+
+HTML PLUGIN
+
+npm install --save-dev html-webpack-plugin
+
+webpack.config:
+
+plugins: [
+        new HtmlWebPackPlugin({
+            template: "./src/index.html",
+            filename: "./index/html"
+        })
+    ]
+
+CSS PLUGIN
+
+npm install --save-dev mini-css-extract-plugin css-loader
+
+plugins: [
+        new MiniCssExtractPlugin({
+            filename: "[name].css"
+        }),
+    ]
+
+посмотреть список установленных пакетов:
+npm list
+
